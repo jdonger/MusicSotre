@@ -10,7 +10,6 @@ namespace MusicStore.Controllers
     {
         public ActionResult Index()
         {
-            var a = 80;
             return View();
         }
 
