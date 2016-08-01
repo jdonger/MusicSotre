@@ -1,0 +1,29 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc
+@model IPagedList<MusicStore.Models.Albums>
+@helper DisplayTitle(string title,int len) { 
+if(title.Length<=len)
+{
+        @title;
+}
+else
+{
+        @title.Substring(0,len)<text>...</text>
+}
+    }
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.TextBox("search");
+        <input type="submit" value="搜索" />
+    }
+</div>
+
+@Html.Partial("_AlbumList")
+@Html.PagedListPager(Model, page => Url.Action("Index", new {ViewBag.search, page }))
