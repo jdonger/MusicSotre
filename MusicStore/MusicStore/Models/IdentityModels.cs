@@ -1,8 +1,10 @@
 ﻿using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MusicStore.Models
 {
@@ -20,11 +22,50 @@ namespace MusicStore.Models
         }
     }
 
+    public class ApplicationDbInitialize:DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    {
+        protected override void Seed(ApplicationDbContext context)
+        {
+            var userManager=HttpContext.Current.GetOwinContext().Get<ApplicationUserManager>();
+            var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
+
+            var roleName = "admin";
+            var userName = "admin@123.com";
+            var userPsw = "Admin@123";
+
+            var role = roleManager.FindByName(roleName);
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                roleManager.Create(role);
+            }
+
+            var user = userManager.FindByName(userName);
+            if (user == null)
+            {
+                user = new ApplicationUser();
+                user.Email = userName;
+                user.UserName = userName;
+               
+                userManager.Create(user,userPsw);
+            }
+
+            var roles = userManager.GetRoles(user.Id);
+            if(!roles.Contains(roleName))
+            {
+                userManager.AddToRole(user.Id,roleName);
+            }
+
+            base.Seed(context);
+        }
+    }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            //设置初始化
+            Database.SetInitializer(new ApplicationDbInitialize());
         }
 
         public static ApplicationDbContext Create()

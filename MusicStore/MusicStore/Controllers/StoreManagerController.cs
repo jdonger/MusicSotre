@@ -13,6 +13,7 @@ using X.PagedList;
 
 namespace MusicStore.Controllers
 {
+    [Authorize(Roles ="admin")]
     public class StoreManagerController : Controller
     {
         private MusicStoreEntity db = new MusicStoreEntity();

@@ -24,7 +24,10 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
                     <li>@Html.ActionLink("商品浏览", "Index", "Store")</li>
-                    <li>@Html.ActionLink("商品管理","Index","StoreManager")</li>
+                    @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <li>@Html.ActionLink("商品管理","Index","StoreManager")</li>
+                    }
                     <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
