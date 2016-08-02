@@ -12,6 +12,9 @@ namespace MusicStore.Controllers
     public class StoreController : Controller
     {
         MusicStoreEntity db = new MusicStoreEntity();
+
+        [Authorize(Roles ="admin,user")]//开启用户验证
+        //[Authorize(Users ="")]
         // GET: Store
         public ActionResult Index(string search,int page=1)
         {

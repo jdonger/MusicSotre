@@ -54,14 +54,14 @@ namespace MusicStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AlbumId,GenreId,ArtistId,Title,Price,AlbumArtUrl")] Albums albums,
-            HttpPostedFileBase imageFile)
+            HttpPostedFileBase imageFile)//添加参数
         {
             if (ModelState.IsValid)
             {
                 if(imageFile != null)
                 {
                     string guid=Guid.NewGuid().ToString();
-                    string imageName =guid+ Path.GetFileName(imageFile.FileName);
+                    string imageName =guid+ Path.GetFileName(imageFile.FileName);//使用Path需using System.IO;
                     string serverPath = Server.MapPath("~/Content/Images/"+imageName);
                     imageFile.SaveAs(serverPath);
 
