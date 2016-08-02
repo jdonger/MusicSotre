@@ -22,6 +22,7 @@ namespace MusicStore.Models
         }
     }
 
+    //ADD
     public class ApplicationDbInitialize:DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
