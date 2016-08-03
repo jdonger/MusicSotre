@@ -18,9 +18,9 @@ namespace MusicStore.Controllers
             return View(list);
         }
 
-        public ActionResult Details(int orderID)
+        public ActionResult Details(int id)
         {
-            var list = db.OrderDetails.Where(p => p.OrderId == orderID).ToList();
+            var list = db.OrderDetails.Where(p => p.OrderId == id).ToList();
             return View(list);
         }
     }
