@@ -44,10 +44,19 @@
         <dd>
             @Html.DisplayFor(model => model.AlbumArtUrl)
         </dd>
-
+        @using (Html.BeginForm("AddToCart","ShoppingCart"))
+        {
+        @*@Html.Hidden("id",Model.AlbumId);*@    
+        <dt>数量</dt>
+        <dd>
+            <input type="text" id="txt-count" name="count" value="1" />
+        </dd>
+        <dt><input name="id" value="@Model.AlbumId" type="hidden" /></dt>
+        <dd><input type="submit" class="btn btn-primary" value="加入购物车" /></dd>
+        }
+     
     </dl>
 </div>
 <p>
-    @Html.ActionLink("加入购物车", "AddToCart", "ShoppingCart", new { id = Model.AlbumId }, new { }) 
-   
+    @*@Html.ActionLink("加入购物车", "AddToCart", "ShoppingCart", new { id = Model.AlbumId }, new { })*@
 </p>

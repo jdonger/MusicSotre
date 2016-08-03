@@ -25,7 +25,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="row-@item.RecordId">
         <td>
             @Html.DisplayFor(modelItem => item.Albums.Title)
         </td>
@@ -33,11 +33,13 @@
             @Html.DisplayFor(modelItem => item.Albums.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Count)
+            @*@Html.DisplayFor(modelItem => item.Count)*@
+            <input type="text" class="item-count" data-id="@item.RecordId" value="@item.Count" />
         </td>
        
-        <td>          
-            @Html.ActionLink("移除", "RemoveFromCart", new { id=item.RecordId })
+        <td>     
+            <a href="#" class="remove-link" data-id="@item.RecordId">移除</a>     
+            @*@Html.ActionLink("移除", "RemoveFromCart", new { id=item.RecordId })*@
         </td>
     </tr>
 }
@@ -46,6 +48,37 @@
         <td>总计</td>
         <td></td>
         <td></td>
-        <td>@ViewBag.CartTotal</td>
+        <td><text id="cart-total">@ViewBag.CartTotal</text></td>
     </tr>
 </table>
+
+@section Scripts{
+    <link rel="stylesheet" href="~/Content/jquery.spinner.css" />
+    <script type="text/javascript" src="~/Scripts/jquery.spinner.js"></script>
+
+    <script type="text/javascript">
+        $(function ()
+        {
+            $(".item-count").spinner();
+            $(".remove-link").click(function () {
+                var itemID = $(this).attr("data-id");
+                $.post("/ShoppingCart/RemoveFromCart", { id: itemID }, function (data) {
+                    $("#row-" + data.ItemID).fadeOut("slow");
+                    $("#cart-total").html(data.CartTotal);
+                    $("#cart-count").html(data.CartCount);
+                });
+            });
+
+            $(".item-count").bind("update",function () {
+                var itemID = $(this).attr("data-id");
+                var itemCount = $(this).val();
+                $.post("/ShoppingCart/UpdateItemCount", { id: itemID, count: itemCount },
+                    function (data) {
+                    $("#row-" + data.itemID).fadeOut("slow");
+                    $("#cart-total").html(data.CartTotal);
+                    $("#cart-count").html(data.CartCount);
+                });
+            });
+        });
+    </script>
+}

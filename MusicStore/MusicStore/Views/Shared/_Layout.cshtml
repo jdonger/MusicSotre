@@ -30,8 +30,10 @@
                     }
                     <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+                    @{Html.RenderAction("GetCartSummary","ShoppingCart");}
+                    
+                    @Html.Partial("_LoginPartial")
+</div>
         </div>
     </div>
     <div class="container body-content">

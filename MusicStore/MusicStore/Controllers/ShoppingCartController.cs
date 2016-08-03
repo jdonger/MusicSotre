@@ -26,15 +26,15 @@ namespace MusicStore.Controllers
             return View(cartList);
         }
 
-        public ActionResult AddToCart(int id)
+        public ActionResult AddToCart(int id,int count)
         {
             var album = db.Albums.Find(id);
             if (album != null)
             {
-                var cartItem= db.Carts.SingleOrDefault(p => p.AlbumId == id);
+                var cartItem= db.Carts.SingleOrDefault(p => p.AlbumId == id&&p.CartId==User.Identity.Name);
                 if (cartItem != null)
                 {
-                    cartItem.Count++;
+                    cartItem.Count+=count;
                 }
                 else
                 {
@@ -42,15 +42,59 @@ namespace MusicStore.Controllers
                     {
                         AlbumId = id,
                         CartId = User.Identity.Name,
-                        Count = 1,
+                        Count = count,
                         DateCreated = DateTime.Now
                     };
                     db.Carts.Add(cartItem);
                 }
                 db.SaveChanges();
             }
-            //Response.Write("<script>成功添加到购物车!</script>");
+           
             return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveFromCart(int id)
+        {
+            var cartItem=db.Carts.SingleOrDefault(p => p.RecordId == id&&p.CartId==User.Identity.Name);
+            if (cartItem != null) { 
+                db.Carts.Remove(cartItem);               
+                db.SaveChanges();
+            }
+
+            var result = new
+            {
+                ItemID = id,
+                CartTotal = ShoppingCart.CartTotal,
+                CartCount=ShoppingCart.CartCount
+            };
+
+            return Json(result);
+        }
+
+        public ActionResult UpdateItemCount(int id,int count)
+        {
+            var cartItem = db.Carts.SingleOrDefault(p => p.RecordId == id &&
+            p.CartId == User.Identity.Name);
+
+            if (cartItem != null)
+            {
+                cartItem.Count = count;
+                db.SaveChanges();
+            }
+            var result = new
+            {
+                ItemID = id,
+                CartTotal = ShoppingCart.CartTotal,
+                CartCount = ShoppingCart.CartCount
+            };
+
+            return Json(result);
+        }
+        [AllowAnonymous]
+        public ActionResult GetCartSummary()
+        {
+            ViewBag.Count = ShoppingCart.CartCount;
+            return PartialView("_CartSummary");
         }
     }
 }

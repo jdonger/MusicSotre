@@ -1,0 +1,54 @@
+.spinner {
+    height: 25px;
+    width: 100px;
+    overflow: hidden;
+    *zoom: 1;
+    -webkit-box-shadow: 0 3px 3px -4px #aaa;
+    -moz-box-shadow: 0 3px 3px -4px #aaa;
+    box-shadow: 0 3px 3px -4px #aaa;
+}
+
+    .spinner div, .spinner .value {
+        text-align: center;
+        display: block;
+        float: left;
+        line-height: 23px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .spinner div {
+        height:23px;
+        width: 23px;
+        font: 20px Arial normal;
+        outline: none;
+        border:1px solid #aaa;
+    }
+
+    .spinner .decrease, .spinner .increase{
+        cursor: pointer;
+    }
+
+        .spinner .decrease[disabled] {
+            cursor: default;
+        }
+
+
+    .spinner .value {
+        width: 40px;
+        height: 23px;
+        font-family: Arial;
+        padding: 0px;
+        border-bottom:1px solid #aaa;
+        border-top:1px solid #aaa;
+        border-left:0px;
+        border-right:0px;
+    }
+
+        .spinner .value.passive {
+
+        }
+
+    .spinner .error, .spinner .invalid {
+
+    }
