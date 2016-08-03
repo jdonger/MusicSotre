@@ -44,7 +44,7 @@
         <dd>
             @Html.DisplayFor(model => model.AlbumArtUrl)
         </dd>
-        @using (Html.BeginForm("AddToCart","ShoppingCart"))
+        @using (Html.BeginForm("AddToCart","ShoppingCart",FormMethod.Get))
         {
         @*@Html.Hidden("id",Model.AlbumId);*@    
         <dt>数量</dt>
